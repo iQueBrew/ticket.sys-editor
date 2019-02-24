@@ -576,7 +576,6 @@ class OwO_UwU(Tk): # Just a random name choice, no reason behind it at all
 		if isTitle: # if this is a title image
 			imgSize = (184, 24) # set image size to 184x24
 			for i in dec:
-				#grey = (i + 1) * 31 // 32
 				grey = i # it's literally just IA8... *screams*
 				alpha = next(dec)				
 				dtex.extend([grey, grey, grey, alpha])
