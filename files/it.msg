@@ -29,7 +29,7 @@ Cancella ticket
 Seleziona ticket.sys
 Files di sistema iQue Player
 Tutti i files
-Questo non è un ticket.sys valido!nTicket #1 magic: {}
+Questo non è un ticket.sys valido!\nTicket #1 magic: {}
 Non trovato
 Magic:
 Lunghezza immagine di anteprima:
@@ -39,7 +39,7 @@ Immagine titolo:
 Calls SK permesse:
 CID:
 Ticket ID:
-Attenzione: Le immagini devono essere soltanto monocromatiche, quindi alcuni dati andranno persi cercando di convertire direttamente l'immagine selezionata in un titolo. 
+None
 Seleziona file in cui salvare
 Valore non valido {} {}\nAssicurarsi che sia un valore hex intero lungo {}-byte
 Lunghezza immagine titolo o di anteprima non corretta! Informa Jynji della comparsa di questo messaggio oppure prova con una immagine meno complessa.
@@ -49,11 +49,11 @@ titolo
 anteprima
 Portable Network Graphics file
 Si prega di selezionare prima un ticket
-Sicuro di voler cancellare il ticket per "{}"? Questa operazione non puo'essere annullata!
+Sicuro di voler cancellare il ticket per {}? Questa operazione non puo\'essere annullata!
 Seleziona ticket.dat
 Ticket files iQue Player
 Questo non è un file ticket valido!\nTicket magic: {}
-La lunghezza del file non è corretta! Per importare un CMD o un file contentDesc, creare un nuovo ticket ed utilizzare la funzione "Sostituisci dati".
+La lunghezza del file non è corretta! Per importare un CMD o un file contentDesc, creare un nuovo ticket ed utilizzare la funzione Sostituisci dati.
 Files descrizione contenuto iQue Player
 Files metadata contenuto iQue Player
 Seleziona dati da importare
@@ -65,63 +65,10 @@ ID:
 ticket.sys editor versione {} by Jynji. Controlla questo spazio!\nCurrent numTickets: {}\n\nTraduzione Cinese: tenyuhuang, SKSA\nTraduzione Francese: MelonSpeedruns\nTraduzione Tedesca: Mr_ZG, BY\nTraduzione Italiana: asper\nTraduzione Croata: LuLGuy9999
 Ordina tickets
 English
-中文
+简体中文
 Lingua
 Français
 Deutsch
 Italiano
 Hrvatski
-
-
-
-
-
-Locazione EEPROM RDRAM:
-Dimensione EEPROM:
-Locazione flash RDRAM:
-Dimensione flash:
-Locazione SRAM RDRAM:
-Dimensione SRAM:
-Locazione Controller Pak 0 RDRAM:
-Locazione Controller Pak 1 RDRAM:
-Locazione Controller Pak 2 RDRAM:
-Locazione Controller Pak 3 RDRAM:
-Dimensione controller Pak:
-osRomBase:
-osTvType:
-osMemSize:
-Valore sconosciuto #3:
-Valore sconosciuto #4:
-Magic:
-Numero dei files .u0x:
-None
-None
-Immagine anteprima
-Immagine titolo
-None
-Riempimento (padding):
-Versione Certificate Authority CRL:
-Versione Content Protection CRL:
-Dimensione:
-Valore sconosciuto #5:
-Titlekey IV:
-Hash SHA-1 del testo non criptato:
-Content IV:
-Flags Exec:
-Permessi hardware:
-None
-CMD BBID:
-Certificato BBID:
-CID:
-Titlekey:
-Firma:
-Ticket BBID:
-Ticket ID:
-Tipo di versione dimostrativa:
-Minuti o numero avvii per la versione dimostrativa:
-Riempimendo (padding):
-Versione ticket CRL:
-Titlekey IV 2:
-Chiave pubblica ECC:
-Certificato ticket:
-Firma:
+繁體中文

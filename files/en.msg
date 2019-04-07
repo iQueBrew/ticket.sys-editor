@@ -39,7 +39,7 @@ Title image:
 Allowed SK calls:
 CID:
 Ticket ID:
-Warning: Title images must be monochrome only, so some data will be lost trying to directly convert your selected image to a title.
+None
 Select file to save to
 Invalid value for {} {}\nPlease make sure it is {}-byte long hex integer!
 Title or thumb image length is incorrect! Please tell Jynji that this message appeared, or try a less complex image.
@@ -65,63 +65,10 @@ ID:
 Version {} of ticket.sys editor by Jynji. Watch this space!\nCurrent numTickets: {}\n\nChinese translation: tenyuhuang, SKSA\nFrench translation: MelonSpeedruns\nGerman translation: Mr_ZG, BY\nItalian translation: asper\nCroatian translation: LuLGuy9999
 Sort tickets
 English
-中文
+简体中文
 Language
 Français
 Deutsch
 Italiano
 Hrvatski
-
-
-
-
-
-EEPROM RDRAM location:
-EEPROM size:
-Flash RDRAM location:
-Flash size:
-SRAM RDRAM location:
-SRAM size:
-Controller Pak 0 RDRAM location:
-Controller Pak 1 RDRAM location:
-Controller Pak 2 RDRAM location:
-Controller Pak 3 RDRAM location:
-Controller Pak size:
-osRomBase:
-osTvType:
-osMemSize:
-Unknown value #3:
-Unknown value #4:
-Magic:
-Number of .u0x files:
-None
-None
-Thumb image:
-Title image:
-None
-Padding:
-Certificate Authority CRL version:
-Content Protection CRL version:
-Size:
-Unknown value #5:
-Titlekey IV:
-SHA-1 hash of plaintext:
-Content IV:
-Exec flags:
-Hardware access rights:
-None
-CMD BBID:
-CMD certificate:
-CID:
-Titlekey:
-Signature:
-Ticket BBID:
-Ticket ID:
-Type of trial:
-Minutes or launches for trial:
-Padding:
-Ticket CRL version:
-Titlekey IV 2:
-ECC public key:
-Ticket certificate:
-Signature:
+繁體中文

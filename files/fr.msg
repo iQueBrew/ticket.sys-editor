@@ -39,7 +39,7 @@ Image titre:
 Appels SK autorisés:
 CID:
 ID du Ticket:
-Attention: les images de titre ne doivent être que monochromes; certaines données seront donc perdues si vous essayez de convertir directement l'image sélectionnée en titre.
+None
 Sélectionnez un fichier à remplacer.
 Valeur non valide pour {} {}\nVeuillez vous assurer qu'il s'agit d'une valeur longue de {} bytes.
 La longueur du titre ou de l'image de bannière est incorrecte! Merci de dire à Jynji que ce message est apparu ou d'essayer une image moins complexe.
@@ -49,11 +49,11 @@ titre
 bannière
 Fichier Portable Network Graphics
 Veuillez d'abord sélectionner un ticket!
-Êtes-vous sûr de vouloir supprimer le ticket pour "{}" ? Cela ne peut pas être annulé!
+Êtes-vous sûr de vouloir supprimer le ticket pour {} ? Cela ne peut pas être annulé!
 Sélectionnez le ticket.dat
 Fichiers Ticket iQue Player
 Ce fichier n’est pas un ticket valide !\nTicket magie: {}
-La longueur de ce fichier est incorrecte! Pour importer un fichier CMD ou contentDesc, créez un nouveau ticket et utilisez la fonction "Remplacer les données".
+La longueur de ce fichier est incorrecte! Pour importer un fichier CMD ou contentDesc, créez un nouveau ticket et utilisez la fonction Remplacer les données.
 Fichiers de description du contenu du iQue Player
 Fichiers de métadonnées du contenu du iQue Player
 Sélectionnez les données à importer
@@ -65,62 +65,10 @@ ID:
 Version {} de l'éditeur de ticket.sys par Jynji. Surveillez cet endroit !\nNuméros actuels: {} \n\nTraduction en Français: tenyuhuang, SKSA\nTraduction en Français: MelonSpeedruns\nTraduction en Allemand: Mr_ZG, BY\nTraduction en Italien: asper\nTraduction en Croate: LuLGuy9999
 Trier les tickets
 English
-中文
+简体中文
 Langue
 Français
 Deutsch
 Italiano
 Hrvatski
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-None
-None
-
-
-None
-
-
-
-
-
-Titlekey IV:
-
-
-
-
-None
-CMD BBID:
-
-CID:
-Titlekey:
-
-
-
-
-
-
-
-Titlekey IV 2:
-
-
+繁體中文
