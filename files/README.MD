@@ -9,3 +9,5 @@ Flags are from http://www.famfamfam.com.
 `thumb.png` and `title.png` are used in the default ticket.
 
 .msg files are a list of strings for each language.
+
+`icon.ico` is taken from iQue@Home.
