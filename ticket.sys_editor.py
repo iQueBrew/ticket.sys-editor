@@ -1,13 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from tkinter import Button, Entry, Frame, Label, LabelFrame, Tk, Toplevel
-from tkinter.filedialog import *
-from tkinter import ttk
-from tkinter import messagebox
-import zlib, PIL.Image, PIL.ImageTk, os, sys, json, io
+from tkinter import BooleanVar, BOTH, Button, END, Entry, Frame, Label, LabelFrame, Listbox, Menu, StringVar, Tk, Toplevel
+from tkinter.filedialog import askopenfilename, asksaveasfilename
+from tkinter.ttk import Notebook
+from tkinter.messagebox import askyesno, showerror
+from zlib import compressobj, decompress, DEFLATED
+from PIL.Image import open as imageopen, frombytes
+from PIL.ImageTk import PhotoImage
+from os.path import isdir, splitext
+from os import mkdir, getenv
+from sys import argv
+from json import dump, load
+from io import BytesIO
 
-VERSION = "1.7"
+VERSION = "1.7.1"
 
 class LabelledEntry(Frame):
 	def __init__(self, parent, text = None, textvariable = None, state = 'normal', isHex = True, length = 8):
@@ -86,6 +93,14 @@ class OwO_UwU(Tk): # Just a random name choice, no reason behind it at all
 
 	def __init__(self):
 		Tk.__init__(self)
+		
+		self.icon = b'x\x9c\x9dV\tP\x93W\x1e\xffPZ\xab\xd5Z\xc5\xda\xd9\x9d\xedj\xdb\xe9\xacV\xad\xa5\xb5\x80\xa2\x80\x07*r\x88\x1c\x06\xe4\x88\xdc\x87@\xe4\x0c\xc8M8\x92p\t$!\x04\xc2\x15B\xb8\xef#\x80B\x8a\x80 (xPE\xb4\xd5\xaa\xdd\xba;\xbb\xed\xb8\xb5\xdb\x9d\xdd\x99\xdf\xfe\x13\xa4\xe3\xec\xba\x9d\xba/\xf3\xcb\xff}\xef{\xef\xff\xfb_\xdf{\x8fa\xf4\xe8\xb7q#\xa3\xfdg\xea\xded\x98\xf5\x0c\xc3l"\xd0\x10c\xc1,\x8c/6\x83\xd7\x17\xf0\xb2\xcd\xd2\xf2\xe0\xbb\x87\x0e\x1e\xf6\xb0\xb1\xb6\x95\x1e\xb3w\x18qppz\xe0\xe8\xe0\xf4\xc4\xe1\x98\xe3\x13;;\xfb\x87V\x87\xad\xc7\xf6\xef?P\xb2\xdbt\x8f\x87\xb1\x91\xc9{/\xcf\xf0\xe2fcc\xbb\xdd\xc1\xdeA\xe6\xe9\xe1\xf9\xc0\xdb\xd7\x1f\xde\xbeA`{\x05\xc1\xd3+\x18\x1e\xec@\xb8y\x04\xc0\xd5\xdd\x0f,\xd7\x93p>\xee\x0e\'\'\x16lm\x8f>\xd8k\xb1\xaf\xcc\xc4x\x97\xe1\xff\xcb\xeb\xe8\xe0\xf8\x96\xb3\x93s\xb6\x8f\x8f\xef?BB8\x08\x0e\x89\xc0\xe9\xd3\xd1H\x8d\x0bGA\xaa\x07\xca2lP-8\x8aj\xbe\x9d\xae\x9f\x9f\xe2\x89\x84\xe8P\xf8\xf8\x06\xc2\xd9\xc5\x13\xce\xce\xae\xb0\xb7w\xf8\xa7\xd9\x1e\x8b<\xa3\x1dFo\xbf\x0c7\xeb\xb8\x8b\xa1\xa7\'\xfb2\',\x1c\x9c\x88x\xc4\xc5r!\xe3\x07\xa2=\xc7\x10}\xc2\xdf\xa1\x9f\xff\n\xcee2\x18\xc8 \x90\xd4\xf5\xf9\xcb\xd0/\xfc=\xdarw@\x9a\x15\x88S\xc1\xc1pt\xf6\x84\x933\x0b\x87\x0f\x1e\x9e\xa6\x9c|\xfak\xb8\xdd\xdd<\xf6\x06\x06\x04}\xc3\x8d%\xdex\x1e\x8a\x05\x1ct\xe5|\x085\x8fAO\x1a\xf1d\xbf\n\x8dh3FJ?\xc5X\xf9\x0e\x8cW\xee\xc0(\xf5\x87\x8a6\xa1\x9f\xde\xf5\xd2\xbc\xbet=\xf4\xe6\x7f\x8a\xc2\xf4Sp\xf3\xf4\xa7X\x9c\x80\x9d\xed\xd1o\xc9\x86\x03\xbf\xc4}\x92\xcd\xde\x16\x16\x1a\xfa8!1\r\xe9\xe99\xa8\xc9qDw\xfaJt$\x117\x7f\x15\x86K\x8cpI\xe1\x88I%\x1b\x97j\xbc0\xa1\xf4\xd2I-&k<I:aXf\x8a^\xc1\x1a\xb4\'2Pg\xbd\x89\x9a\\g\xf8\xf9s(\x16\xae\xb0\xb59\xfag\xa3\xcf\x8c?~\x11\xb7\xbf\x9f\xef\xba\xb0\xb0\xb0\xc9\x8c\x0c\x01\x04\x82\xb3\xa8\xe1\x1fAK\x02\x83\x16\xe2\xee\xce\xd2\x87Fj\x84\xd1r{\x8c\xcam1"\xb7"y\x84\x9e\xadI.\xc2\x86\xe2q\x14c\x15\x0e\xb8Pj\x86\x1e\xe1\n\xb4\x90\r\xed\xc9KQ\x97{\x8cl\x08\xc3q\xd6\tXYYO\x93\r\xffU\x0f!\xc1\xa7\x04YY\x02\xe4\xe6KP\x9e\xe5\x0c\x15w\t\x1a\xe2\x89?\x85|\x17.\xc1@\xc1Z\x0c\x89\xde\xc3\x90\xf8\x0f\x18\x14o&\xb9\x1d\x83\x12C\xeaS\xec%\x9f@S\xfc\t\xf5\xb7\xe0\xbch#\x06\xce\xaeE\x8f@_\xb7\xb6\x81|h\x8c\xd7G\xb9\x80E\xdf\x8b?\\\\\xdcaa\xbe/\xf7yn\x8a\xf9\x96\xb44\xde\x8f"\xb1\x1c\xc591\x90G.\x87\x92\xcb\xe8\xf8\x9b\xc8\xff\xd6T\x06\x1dTk\x9dY\x0c\xba\xf8\x04\x92\xdd\xa4\xbfG\xf8*\xba\t=\x82\x05\xd9%\xd0C\'\xd5b\x1b\xd5IK2\xad\xd5r\x13jc\x19\xd4\x9cy\x03\xb9\xa9\xa1`\xb9\xd0w\xea\xc4\xfa\xc9\xd8x\xe7G\x8b\xfc\xdc\xe8h\xa9DR\x02iq\t\n\xa3\xb6\xa2\xf44\xad\x89cP\x7f\xe6\x99\xfd\x89\x0bz\xb4Rk\x8f\xeeYk\x1b\xc9\xe6\xe4\x85\xb1E\xa9}\xa7\xb5{\x11\xf5\xf1\x0b\xba\xe4\xe1\x0c\xca\x12wA\xfb-\x9fp\xf3\xc4\x81\xfd\x96eZ\xee\x98\xa8\xc8\r\x82,\xfe\xa3\xca\xeaZ\x14dFA\xe0\xcb\xa0<\x9a\x81\x92lV\xd1\xba\xba3\x0bR\x15\xbb\xd0W\xd2;E\xe4R\xa8\x927\xa06~=j)N\xaa\xc59/\x80\x96[\xeb\x7f\x05\xad+\x0c\xd1\x87 9\x94\xf6,\x1f89:?61\xde\xf9\xfe\x99\xb8X\x17YI\x19\xaa\xaaj\x90\xc91A~ \xcd\x8dbPMPh\xb9b\x16l\xa9!YIqiH\xfb\x10\x97\xd4\xc5\xb8\x7f\xff>\xa6/jP\x97\xf2\x81n^U\xc4\xc2\xfc\x1a-h\xad6\x7f\xda~u$\x8d\xd3s\xa5\x96?\x98A\x1e\xd7\x1cAA\x1c\xb8{\x9c\xa4:\xb0\xf0\xe0\xa5\xa5IT\xaaF\xc8\x8b\xc5H\xf2^\x87\xa2S\xa4\x8b\xbb\x02\x8a\x84\xf7Q\x9b\xf8\x01\xe5m%\xca\x89\xb7"r5\xba\x8a\x8e\xe3\xe1\xdd[x4\x7f\x03=\x85;i?\xda\x8cz\xde\x16z\xb7\nM\x02\x13\xd4\xa5nBu\xdc\xdb\xb4\xf6=TE\xeb\x13\xe7j\xa8x\x86\xf4\xfc.\xcaH\x87(\x94\x810\xe4\x1d\xc4F\x85\x83}\xd2\x17G\xac\xacKssr.\xb4\xb5v@$LD\x82\xfbk:\x1b\xab\xe2\xd6bZ\xd3\x86\xe1\x0e\t\xca8\xcb\xd1$\xdc\x8b\xcbC\xf5\xe8\x93\xfb\xa0\x99o\x82\xaeBgt\x97\x05B\x16\xf6\x9a\xce\xb6\xa9>\x19\xc6\xba\x8a\xe9\x9d\x11\xae\x0c\xaa0~\xbe\x99\xf6\xc1C\x98\x9d\x1c\xc0\xfc\x17\xb3\x18W7\xa2AxX\xe7[\xa6\xdfj\xa4pC\xe0\xe5\x1d\x00GG\xa7\xb1b\xb1\xe8aWw?rR|\x10\x7f\x82bDs\x8a\t\xf3\x97\xdb1\xd4$@m\xd2&|}\xef\x1e\xd4\xf2\x00Hi\\\x16\xc2@J6\x8e4\xa5\xa1\xbfI\x84J\xeez\xdc\x9f\x9bEC\xce1H\xfc\x19\\\x1f>\x8b\xf1\x01\x05f\xce\xe7\xe3\xcb\x9b\xd3P\x9cy\x97r\xbf\x12\xd5\t\x1bP\x14\xa2\x87T\xf6\x12\xf0\xb8l\xda\x0fB\xe0v\xc2\xfdQ\x85\\\xfe\xbd\xbao\x10Yq,\xc4\xba0\xc8\x0f\xa28Q\r\xdc\x9chB\xbf*\x01W\x87\xf2q\xeb\xeaU\xc8\xc2\r \xa5\xf8\xc98\x0c\xc44\xa7\x99\xbf\x037\xaf_\x83*\xf3\x10\xe6gF\xa0\x128@D\xb5;}.\x15\x17\xfb[p}\xa4\x11\x03\xaaL\x94F\xfc\x06r\xee;\x90E\xacB\x01\xd9\x9d\xe8\xc6\x80\x17\xc3B\xf0)\xca\x81\xe7\xc9\'\xd5\x95\x95\xdf\x9f\x1f\x1cFf\x9c+\xa2\x9c\x18d\x93\x0f\xe2\xb0\x95\xb8{M\x83\xc1f\t\xbe\x9e\x9b\xc0X\x9f\x12\xa2\xa0%(&~-\xb4\xfc5\t\x1f\xe2\x1e\xf9\xddY\x9e\x8e;\xd7\xc6Q+pD\x817\x83\xab\x1a\tF\xfb\xca\xa1.\xf7\x86\xa6M\x06y\x8c!f\xc7\x070\xd8T\x00\xa1\x8f\x9e\xce\xc7\xd4h\x16BB#\xe1\xed\xe5\xfd\xa4\xaa\xa2\xe2\x81\xe6\xf3\x11\x08\x93\x03\x11fO\xf9!\x1d\xe2\xd3\xebp\xa19\x0f\xea\xb2(\xdc\xbb9\x89\xcf;e\xba\x98\x94\x84-@\xcb\xdf\x90\xb1\x03\x8f\x1f=\xc2\x98\xba\t\xb3\xa3\x1dP\xa6Y\xa0,j\x1d\xc5\xbf\x03C\xf5\xc9\x10\x07\xafD[\xa1\x07Z\n\xe8|\xe8\x92B\x1e\xb7\x19\x99^\x0c\xa2\x9c\xf5\x91\x1c\xe5\r\x0e\x9d\xe5>\xde\xbe\x0f+\xe4e\xc3cc\x13\x90\xe4e\xc0\xdf\xe6U\xa4x2\xc8\xa18\x16\x04\xbf\x85\xa2\x8070= \xc2\xc4P\x1f$!+t\xfbR\x19\xed#E\x14#\x8d\xe24\xfe\xf2\xd7\xa7P\xa6\xeeAq\xf0\xc2xY\x84\x1eJ8K!%\x1b\xa5\x94\'\t\xc5\xaa4j\x05\xf2i\xbe\x90\xfcJe3\xe08\xadF\x12\x97\x83\x88\xc8X\x9cd{\x8d\xc9\xa4\xc5\xe2\x8b\x17\xc7\xd1\xa8\xaa\x81\x8f\xedZ\xc4\x1cgp6\xf4\xb7\xf8bj\x12\xdd5|T\xc7n\xc4\xf4h?\x1a\xf3X\xb4\x87\xad\x80<b\x19j\x92\x0c\xf1\xcdW_a\xa2\xb3\x08r\xce+\xa8\x8c1\xa0o\xcd@\'+H\x96G\xafCy\xcc\xdb(#Y\x12\xbe\x8c\xea\x8eA\x96\x0f\xa3\x8b}(\xeb\x1d$\'\xc4#:\xe6\x0c\x9d\x05\xae\xb2\x82\xfc<\xd6\xd0\xe0\x104\x9a\x0b8\xcd\xde\x8d \x1b\xaa\x0f\xaf\xd5\xb8\xa2\x96A\xa3LFi\x98\x01\x9a\xd2wcH\x99\x8d\xce\xc2`\x82?&{\x14\x18\xa9O\x82\x82\xea\xaa6~3j\x13\xb6B\x95\xb0\x8d\xfa\x1f\xe9\xa0L\xd8\x0ee\xfc\xc7\xa8>c\x88r\xee6\xca\xa7\x81\xce\xf7\x90\xa3\x14\x7f\xbfCHI\xe1!:\x9a\x8bcG\x8f\xb9\xe7f\x0b7\xb4\xb7\xb6>\xbaz\xf5:\xf2\xb3\x12\xe1\xbe\x9fA4\xc5 ?`\rji}c\xaa\x19\xea\x92>AC\xd2\xc7h\xe3[\xd2]\xc4\x0e\xad\xe9\xb4\xd7\x10oK\xfa.\xb4\xf0LI\x9a.\xc8gh\xe6\xedBc\x9a)\x1aR\xf6\xa0>\xc5\x02b\xceF\xc4\xb0\x18xY\xe9\x83\x17\x1f\x89\xe4d\x1eBC9\xdfZ\x1f\xb1\xd6\xddS\xcbdR\xc9\xcc\xf4\x0c\x06\xcf\x0f\xc2\xd7a\x1b\xbc\xad\x18\xa4\xb0_\xd7\xe9\xed\xe2[\x10\xcc\xd0\xcd\xdfC0\xa5{\xc8.\x82)\xfa\xb2-\xd0\x97c\x0e\xb5\xd0\x8c\xfa\xe6\xcf`\x01u\xf6\xc2X\x8f\xc0\x02\xbd\xc2}h\xcf\xb4@\x9a\xd7\x1b\xf0>D\xfe\xbb\xed\x84\x80\x9f\x8b\xd4T\x1e<=\xd8\xb2\xc5\xf3\xaf0/ws\x7f_\xef\xd3[\xb7\xe6PR(\x84\x93\xf9r\x04P\x1e\xc4\xe1\xefc\xb4\xd8\x06C\x85\x07t\xf8\xbc\xc8\x12\xc3"K\\\x10\x1f\xc4\x88\xc4\x92p\x00#\xe2\x03\x18\xa5\xfe\xa8\x84\xc6t\xe3\x87\x9e\xcd9\x84\x89R{H#?\x80\xbf5\x037\xcb5\xe0\xa7%@\x98\x9d\x07.7\xf6\xeft\xa7\xde\xf6\xfc\x1d\xa0\xbc\xb4$sff\x1a33\xd7\x90\x14\xe9\x03\xc7\xddz\x08\xb4[\x02e\x8a1n\xd4\xfb\xe0\x8a\xc2\rSU.\xb8R}\x02\xd3\n-\xdc0Ss\xe2\x19\xdc~\xc6\x95jW\\Sz\xe0V\xa3?\x1a(\x17\x81\xb6z`\x99\xeb#1\xd2\x1fEER\xf0\xe9\x8e\xe3\xe3\xed\x93\xfd\x9f\xf7\x9f\xa2\xb3\xf9\x06M\x8d\xf5\xe3\xb7\xe7\xe60~q\x02\x11~\xf6\xb0\xdf\xc9\xc0\xf7\x88\x1e\xaa(\x87_\xaaS\xf1\xf0|\x06\xee\xf6\xc4\xe3vW,\xe6:\xb9\xb8\xdd\x19\xa3\x83\xb6?\xdf\x15Gs\x12\xf1h0\x13\xf7\xfby\xa8I\xdd\x0f?+=8\xed^\x82\x98\xa0\xe3(\x91\x95\x13\xbf\x04\x91\xe1\x91S\xac\xe3\xac\xf5/\xba\x03\x8a\x0b\xf2\xb7\xa8\xbb;\xbf\xb9{\xf7\x0e&\xc8\x06\xad\xcdv;\x97\x83e\xc6 -`+45\xf1x<\xdd\x8c\'sj<\xbd\xdd\x8b\x1f\xe6\xba\xf0\xc3|7\x9e\xde\xe9\xc5\xdfn\xab\xf1\xa7\x99V\x0c\xd7&"=p;\x9c\xf70p0[\x85\x04\xd2QQ\xa9\x80\xbc\xbc\ni\xa9i\x8f\xd9\x9e\xecm/\xe2^l\x12Q\xa1\x99\xba\xb7\xfb\xc1\x9d\xf9y\\\xbbv\x83\xea!\x07\x9ev\xdba\xfd\x19\x03\x17\x8b%\x88\xf7\xda\x8aJ\xa1\x17\x06\xeb\xf30\xd9[\x85\xc9>\x05\x86\x1a\xf2i\x8c\xce/\xaf\x8f\xe0j\xb1\x14\xb6\xc6\x0c\xbc\x1dw O\x90\x0eU]\x13\x94\xcaZ\x8a;\xff\x8f~>\xbe{\x7f\x89\xfb\xe78\x14\x15l\xebhm\x9e\x98\x9d\xbd\x8e\xbbw\xbf\xc4\x85\xe1a\x9c\xe5\xa7\xc0\x9fe\x0e\xfb=\xabac\xb4\x04\xf6&\x0c\x1cM\x97\xea`o\xa2G\x9cKq\xccl\r\x02]\xf7A\xc8KD]]\x03\xda;\xbaP\xa7\xaaCfF\xe6d`@\xc0\x0b\xef\xdd\xff\xab\x15\x8b\n\r\xaa+\xe4\x99\xc3\x9a\xa1\x1f\xe7\xe6na\x8e\xea\xe2\xd2\xc4\x04Z\x1aT(\xce\x17"=\xe14\xd5\xa9\x1f\x92\xa2\xfc\xe8\x9b\xe6\xa0(7\x0b\xca\xaa*\xf4\xf4\xf4\xe2\xdc\xb9Atw\xf7\xa0B^\xf1SB|\xbc\x90\x13\x1a\xb6\xeee\xb8\x9foRQ\xe1\x16eu\xa5d\xa0_}\xef\xca\xe5)\xcc\xde\xb8A\x98\x85v\xbf\x9a\xba<\x8d\xcbS\xd3\x98\xbc4\x05\xed\x1e><|\x01\xbd==PT+\xee\x0b\xf8|i\x1c\x97\xfb\x8b\xb9~\x99Vx6o\x83T"vQTU\x8a\x9a\x1a\xea\x87;\xdb\xdb\x1etut|\xd7\xd1\xd6\xfa]Sc\xe3C:G\x87E\x85\x85\xe2\xcct\x9e+\xf9\xbc\xf1\xd7\xea\xc5\xbde\x00\x89\x7f1\x8c\xf9O\x0c\xb3\xe1{\x86Y}\x8fa\x96i\x18f\xa9\x16)\x0c\xa3\xb7\x88_\xab\xf3\xf95\x8bz\xb4:\xb5\xba\xb5\x1cZ.-\xa7\x96\xfb\xdf\xa5)\x04\x82'
+
+		dec = decompress(self.icon)
+		
+		iconphoto = PhotoImage(imageopen(BytesIO(dec)))
+		
+		self.wm_iconphoto(True, iconphoto)
 
 		self.strings = {"en": ["ticket.sys editor", "Open file", "Reload current file", "Save", "Save as", "Exit", "File", "New ticket", "New ticket.sys", "Import ticket.dat", "Edit", "Overwrite keys when importing", "Use more accurate colour mapping", "Options", "About", "Help", "Ticket options", "General", "App info", "Misc.", "Ticket data", "Title:", "ISBN:", "Unknown value #1:", "Unknown value #2:", "Export ticket", "Replace ticket data", "Delete ticket", "Select ticket.sys", "iQue Player system files", "All files", "This file is not a valid ticket.sys!\nTicket #1 magic: {}", "None found", "Magic:", "Thumb image length:", "Title image length:", "Thumb image:", "Title image:", "Allowed SK calls:", "CID:", "Ticket ID:", None, "Select file to save to", "Invalid value for {} {}\nPlease make sure it is {}-byte long hex integer!", "Title or thumb image length is incorrect! Please tell Jynji that this message appeared, or try a less complex image.", "numTickets is incorrect! Please report this to Jynji, along with what you were doing before saving the ticket file.", "Select PNG format {} image", "title", "thumb", "Portable Network Graphics file", "Please select a ticket first!", "Are you sure you want to delete the ticket for \"{}\"? This can't be undone!", "Select ticket.dat", "iQue Player ticket files", "This file is not a valid ticket!\nTicket magic: {}", "This file's length is incorrect! To import a CMD or contentDesc file, please make a new ticket and use the 'Replace data' function.", "iQue Player content description files", "iQue Player content metadata files", "Select data to import", "Binary files", "The file you selected does not appear to be a contentDesc file or content metadata file! Continue to import {} bytes?", "The file you selected appears to be a complete ticket file! Import as ticket? (Selecting 'No' will cancel the import.)", "Is trial ticket:", "ID:", "Version {} of ticket.sys editor by Jynji. Watch this space!\nCurrent numTickets: {}\n\nChinese translation: tenyuhuang, SKSA\nFrench translation: MelonSpeedruns\nGerman translation: Mr_ZG, BY\nItalian translation: asper\nCroatian translation: LuLGuy9999", "Sort tickets", "English", "简体中文", "Language", "Français", "Deutsch", "Italiano", "Hrvatski", "繁體中文"],
 		                
@@ -105,15 +120,15 @@ class OwO_UwU(Tk): # Just a random name choice, no reason behind it at all
 		
 		self.textvars = [StringVar() for i in self.strings["en"]]
 		
-		self.localappdata = os.getenv("localappdata")
+		self.localappdata = getenv("localappdata")
 
-		if not os.path.isdir("{}\\Programs\\ticket.sys editor".format(self.localappdata)):
-			os.mkdir("{}\\Programs\\ticket.sys editor".format(self.localappdata))
+		if not isdir("{}\\Programs\\ticket.sys editor".format(self.localappdata)):
+			mkdir("{}\\Programs\\ticket.sys editor".format(self.localappdata))
 
 		self.saveDataPath = "{}\\Programs\\ticket.sys editor\\config.json".format(self.localappdata)
 
 		try:
-			self.settings = json.load(open(self.saveDataPath))
+			self.settings = load(open(self.saveDataPath))
 			for i in ["lastFile", "overwriteKeys", "accColours", "lang"]:
 				if i not in self.settings.keys():
 					raise KeyError
@@ -176,10 +191,10 @@ class OwO_UwU(Tk): # Just a random name choice, no reason behind it at all
 		
 		self.flagVars = []
 		for i in self.flags:
-			dec = zlib.decompress(i, -15)
-			fileObj = io.BytesIO(dec)
-			temp = PIL.Image.open(fileObj)
-			self.flagVars.append(PIL.ImageTk.PhotoImage(temp))
+			dec = decompress(i, -15)
+			fileObj = BytesIO(dec)
+			temp = imageopen(fileObj)
+			self.flagVars.append(PhotoImage(temp))
 		
 		self.langmenu = Menu(self.menubar, tearoff = 0)
 		self.langmenu.add_radiobutton(variable = self.langButtonVar, command = self.langButtonClicked, value = "en", accelerator = "Ctrl+L", image = self.flagVars[0], compound = "left")
@@ -210,7 +225,7 @@ class OwO_UwU(Tk): # Just a random name choice, no reason behind it at all
 		self.editor = LabelFrame(self.tickets)
 		self.editor.pack(side = "right", fill = BOTH, expand = 1)
 
-		self.nb = ttk.Notebook(self.editor)
+		self.nb = Notebook(self.editor)
 		self.nb.pack(fill = BOTH, expand = 1)
 
 		self.general = LabelFrame(self.nb)
@@ -308,8 +323,8 @@ class OwO_UwU(Tk): # Just a random name choice, no reason behind it at all
 		self.ticketIDWindow = None
 		self.skCallsWindow = None
 
-		if len(sys.argv) > 1:
-			self.openFile(path = sys.argv[1])
+		if len(argv) > 1:
+			self.openFile(path = argv[1])
 		
 		self.changeLang(self.lang)
 
@@ -375,7 +390,7 @@ class OwO_UwU(Tk): # Just a random name choice, no reason behind it at all
 	def ticketSysToList(self, path):
 		binaryData = bytearray(open(path, "rb").read())
 		if binaryData[0x44:0x47] != b'CAM':
-			messagebox.showerror(self.textvars[0].get(), self.textvars[31].get().format(self.byteArrayToHexInt(binaryData[0x44:0x47], digits = 6)))
+			showerror(self.textvars[0].get(), self.textvars[31].get().format(self.byteArrayToHexInt(binaryData[0x44:0x47], digits = 6)))
 			return 1
 		self.numTickets = self.byteArrayToInt(binaryData[:4])
 		for i in range(self.numTickets): # loop through tickets
@@ -477,7 +492,7 @@ class OwO_UwU(Tk): # Just a random name choice, no reason behind it at all
 		return ticketDataList
 
 	def deflatedToPNG(self, data, isTitle = False):
-		dec = iter(zlib.decompress(data, -15))
+		dec = iter(decompress(data, -15))
 		dtex = bytearray()
 		if isTitle: # if this is a title image
 			imgSize = (184, 24) # set image size to 184x24
@@ -503,8 +518,8 @@ class OwO_UwU(Tk): # Just a random name choice, no reason behind it at all
 				a = (pixel & 1) * 0xFF
 				dtex.extend([r, g, b, a])			
 
-		img = PIL.Image.frombytes("RGBA", imgSize, bytes(dtex))
-		return PIL.ImageTk.PhotoImage(img)			
+		img = frombytes("RGBA", imgSize, bytes(dtex))
+		return PhotoImage(img)			
 
 	def setupWidgets(self):
 
@@ -580,7 +595,7 @@ class OwO_UwU(Tk): # Just a random name choice, no reason behind it at all
 				pixel = (r << 11) + (g << 6) + (b << 1) + a
 				new.extend([pixel >> 8, pixel & 0xFF])	
 
-		comp = zlib.compressobj(method = zlib.DEFLATED)
+		comp = compressobj(method = DEFLATED)
 		comp.compress(new)		
 		return comp.flush()
 
@@ -607,7 +622,7 @@ class OwO_UwU(Tk): # Just a random name choice, no reason behind it at all
 						raise Exception
 					newTikList.append(newData)
 				except:
-					messagebox.showerror(self.textvars[0].get(), (self.textvars[43].get()).format(self.splitnamevars[i].get(), j.get(), self.ticketSplitOffsets[i + 1] - self.ticketSplitOffsets[i]))						
+					showerror(self.textvars[0].get(), (self.textvars[43].get()).format(self.splitnamevars[i].get(), j.get(), self.ticketSplitOffsets[i + 1] - self.ticketSplitOffsets[i]))						
 					return 1
 			else:
 				newTikList.append(None)
@@ -619,7 +634,7 @@ class OwO_UwU(Tk): # Just a random name choice, no reason behind it at all
 		offsets = [self.byteArrayToInt(newTikList[18]), self.byteArrayToInt(newTikList[19])]
 
 		if offsets[0] != len(newTikList[20]) or offsets[1] != len(newTikList[21]):
-			messagebox.showerror(self.textvars[0].get(), self.textvars[44].get())
+			showerror(self.textvars[0].get(), self.textvars[44].get())
 			return 1
 
 		newTikList[22] = self.titleISBNToByteArray(index, offsets)
@@ -643,7 +658,7 @@ class OwO_UwU(Tk): # Just a random name choice, no reason behind it at all
 				return
 
 		if len(self.tikBinData) != self.numTickets:
-			messagebox.showerror(self.textvars[0].get(), self.textvars[45].get())
+			showerror(self.textvars[0].get(), self.textvars[45].get())
 			return
 
 		tikDataJoined = bytearray(b''.join(self.tikBinData))
@@ -670,7 +685,7 @@ class OwO_UwU(Tk): # Just a random name choice, no reason behind it at all
 		if isTitle:
 			newSize = (184, 24)
 		
-		img = PIL.Image.open(path)
+		img = imageopen(path)
 		
 		if img.size != newSize:
 			img = img.resize(newSize)
@@ -687,7 +702,7 @@ class OwO_UwU(Tk): # Just a random name choice, no reason behind it at all
 		self.populateOptions(index = self.lastTikIndex)
 
 	def newTicketSys(self, event = None):
-		self.tikBinData = [bytearray(zlib.decompress(self.defaultTik, -15))]
+		self.tikBinData = [bytearray(decompress(self.defaultTik, -15))]
 
 		self.numTickets = 1
 		self.lastTikIndex = None
@@ -699,7 +714,7 @@ class OwO_UwU(Tk): # Just a random name choice, no reason behind it at all
 		self.populateOptions(index = 0)
 
 	def newTicket(self, event = None):
-		self.tikBinData.append(bytearray(zlib.decompress(self.defaultTik, -15)))
+		self.tikBinData.append(bytearray(decompress(self.defaultTik, -15)))
 		self.numTickets += 1
 		self.reloadNames()
 		self.populateOptions(index = len(self.tikBinData) - 1)		
@@ -717,9 +732,9 @@ class OwO_UwU(Tk): # Just a random name choice, no reason behind it at all
 
 	def deleteTicket(self, event = None):
 		if self.lastTikIndex is None:
-			messagebox.showerror(self.textvars[0].get(), self.textvars[50].get())
+			showerror(self.textvars[0].get(), self.textvars[50].get())
 			return
-		if not messagebox.askyesno(self.textvars[0].get(), self.textvars[51].get().format(self.tikNamesUnicode[self.lastTikIndex][0])):
+		if not askyesno(self.textvars[0].get(), self.textvars[51].get().format(self.tikNamesUnicode[self.lastTikIndex][0])):
 			return
 		del self.tikBinData[self.lastTikIndex]
 		self.numTickets -= 1
@@ -736,10 +751,10 @@ class OwO_UwU(Tk): # Just a random name choice, no reason behind it at all
 			return
 		tikData = bytearray(open(temp, "rb").read())
 		if tikData[0x40:0x43] != b'CAM':
-			messagebox.showerror(self.textvars[0].get(), self.textvars[54].get().format(self.byteArrayToHexInt(tikData[0x40:0x43], digits = 6)))			
+			showerror(self.textvars[0].get(), self.textvars[54].get().format(self.byteArrayToHexInt(tikData[0x40:0x43], digits = 6)))			
 			return
 		if len(tikData) != 0x2B4C:
-			messagebox.showerror(self.textvars[0].get(), self.textvars[55].get())
+			showerror(self.textvars[0].get(), self.textvars[55].get())
 			return
 		self.tikBinData.append(tikData)
 		self.numTickets += 1
@@ -759,7 +774,7 @@ class OwO_UwU(Tk): # Just a random name choice, no reason behind it at all
 		temp = asksaveasfilename(title = self.textvars[42].get(), defaultextension = ".dat", filetypes = [(self.textvars[53].get(), (".dat")), (self.textvars[56].get(), (".cdesc")), (self.textvars[57].get(), (".cmd")), (self.textvars[30].get(), (".*"))])
 		if not temp:
 			return
-		extension = os.path.splitext(temp)[1]
+		extension = splitext(temp)[1]
 		if extension == ".cdesc":
 			toExportData = self.tikBinData[self.lastTikIndex][:0x2800]
 		elif extension == ".cmd":
@@ -777,13 +792,13 @@ class OwO_UwU(Tk): # Just a random name choice, no reason behind it at all
 			return
 		newData = bytearray(open(temp, "rb").read())
 		if newData[0x40:0x43] != b'CAM':
-			messagebox.showerror(self.textvars[0].get(), self.textvars[54].get().format(self.byteArrayToHexInt(newData[0x40:0x43], digits = 6)))			
+			showerror(self.textvars[0].get(), self.textvars[54].get().format(self.byteArrayToHexInt(newData[0x40:0x43], digits = 6)))			
 			return		
 		if len(newData) not in [0x2800, 0x29AC, 0x2B4C]:
-			if not messagebox.askyesno(self.textvars[0].get(), self.textvars[60].get().format(hex(len(newData)))):
+			if not askyesno(self.textvars[0].get(), self.textvars[60].get().format(hex(len(newData)))):
 				return
 		if len(newData) == 0x2B4C:
-			if messagebox.askyesno(self.textvars[0].get(), self.textvars[61].get()):
+			if askyesno(self.textvars[0].get(), self.textvars[61].get()):
 				self.tikBinData.append(newData)
 				self.numTickets += 1
 				self.reloadNames()
@@ -902,7 +917,7 @@ class OwO_UwU(Tk): # Just a random name choice, no reason behind it at all
 	def changeSettings(self, toChange = None, value = None):
 		if toChange or value != None:
 			self.settings[toChange] = value
-		json.dump(self.settings, open(self.saveDataPath, "w"))
+		dump(self.settings, open(self.saveDataPath, "w"))
 
 	def settingsChanged(self, key, index):
 		self.changeSettings(key, index)
