@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from tkinter import BooleanVar, BOTH, Button, END, Entry, Frame, Label, LabelFrame, Listbox, Menu, StringVar, Tk, Toplevel
+from tkinter import BooleanVar, BOTH, Button, Checkbutton, END, Entry, Frame, IntVar, Label, LabelFrame, Listbox, Menu, Spinbox, StringVar, Tk, Toplevel
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 from tkinter.ttk import Notebook
 from tkinter.messagebox import askyesno, showerror
@@ -14,7 +14,7 @@ from sys import argv
 from json import dump, load
 from io import BytesIO
 
-VERSION = "1.7.1"
+VERSION = "1.7.2"
 
 class LabelledEntry(Frame):
 	def __init__(self, parent, text = None, textvariable = None, state = 'normal', isHex = True, length = 8):
